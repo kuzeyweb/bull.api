@@ -4,7 +4,7 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function deleteAttributeValue(req, res) {
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id)
         return respondWithError({ res: res, message: 'id parameter can not be empty', httpCode: 401 });

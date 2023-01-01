@@ -3,12 +3,13 @@ import { prisma } from "../prisma/client";
 
 export const createValidationCode = async ({ userId, email, type, codeLength }) => {
     await prisma.$connect()
-        await prisma.validation_codes.deleteMany({
-            where: {
-                email: email,
-                type : type
-            }
-        });
+
+    await prisma.validation_codes.deleteMany({
+        where: {
+            email: email,
+            type: type
+        }
+    });
 
     const validationData = await prisma.validation_codes.create({
         data: {
@@ -33,7 +34,7 @@ export const checkValidationCode = async ({ email, type, userCode }) => {
     await prisma.$disconnect();
 
     if (validationData?.code === userCode) {
-        await prisma.validation_codes.delete({
+        await prisma.validation_codes.deleteMany({
             where: {
                 email: email
             }

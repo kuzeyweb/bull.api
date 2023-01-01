@@ -1,9 +1,9 @@
 import CryptoJS from 'crypto-js'
-import { respondWithError, respondWithSuccess } from '../../resources/apiResponse';
-import { registerValidation } from '../../validations/registerValidation';
-import { sendEmailValidationMail } from '../../mail/mailOperations';
-import { createValidationCode } from '../../resources/validationCodeOperations';
-import { prisma } from '../../prisma/client';
+import { respondWithError, respondWithSuccess } from '../../resources/apiResponse.js';
+import { registerValidation } from '../../validations/registerValidation.js';
+import { sendEmailValidationMail } from '../../mail/mailOperations.js';
+import { createValidationCode } from '../../resources/validationCodeOperations.js';
+import { prisma } from '../../prisma/client.js';
 
 export default async function Register(req, res) {
     await prisma.$connect()

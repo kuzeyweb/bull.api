@@ -4,7 +4,7 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function getCategoryAttributes(req, res) {
-    const { id } = req.query;
+    const { id } = req.params;
 
     try {
         const attributes = await prisma.category_has_attributes.findMany({
@@ -12,11 +12,11 @@ async function getCategoryAttributes(req, res) {
                 category_id: Number(id)
             },
             select: {
-                attributes_pivot: true
+                attributes: true
             }
         });
 
-        const result = attributes.map((attr) => ({ ...attr.attributes_pivot }));
+        const result = attributes.map((attr) => ({ ...attr.attributes }));
 
         return respondWithSuccess({ res: res, message: 'Category attributes listed successfully', payload: { attributes: result } });
     } catch (err) {

@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { emailValidationTemplate, twoFactorAuthTemplate } from "./emailTemplates";
+import { emailValidationTemplate, twoFactorAuthTemplate } from "./emailTemplates.js";
 
 const transfer = nodemailer.createTransport({
     host: "mail.kuzeysoftware.com",

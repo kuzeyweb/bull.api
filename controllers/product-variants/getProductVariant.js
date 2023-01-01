@@ -1,10 +1,9 @@
 import withProtect from "../../middlewares/withProtect"
-import withPermission from "../../middlewares/withPermission"
 import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function getProductVariant(req, res) {
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id)
         return respondWithError({ res: res, message: 'Id field can not be empty', httpCode: 401 });

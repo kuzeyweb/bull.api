@@ -4,8 +4,7 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function updateRole(req, res) {
-
-    const { id } = req.query;
+    const { id } = req.params;
     const { name } = req.body;
 
     if (!id)

@@ -41,7 +41,7 @@ model users {
   application_id   Int
   first_name       String
   last_name        String
-  email            String
+  email            String             @unique
   password         String             @db.VarChar(400)
   profile_picture  String?            @db.VarChar(300)
   created_at       DateTime           @default(now())

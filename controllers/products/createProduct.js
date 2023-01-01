@@ -71,7 +71,7 @@ async function createProduct(req, res) {
         return respondWithSuccess({ res: res, message: 'Product created successfully', payload: product });
     } catch (err) {
         req.body.images.forEach(imageUrl => {
-            fs.unlink(`./public/cdn/${imageUrl.split('/').pop()}`, err => {
+            fs.unlink(`./uploads/${imageUrl.split('/').pop()}`, err => {
                 if (err) {
                     console.error(err);
                 }

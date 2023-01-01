@@ -4,18 +4,20 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function createProductInventory(req, res) {
-    const { is_in_stock, quantity } = req.body;
-    const { id } = req.query;
+    const { is_in_stock, quantity, product_id, product_variant_id } = req.body;
 
     //processing the data
     let data = {};
-    if (is_in_stock) data.is_in_stock = is_in_stock
-    if (quantity) data.quantity = quantity
+    if (is_in_stock) data.is_in_stock = is_in_stock;
+    if (quantity) data.quantity = quantity;
+    if (product_id) data.product_id = product_id;
+    if (product_variant_id) data.product_variant_id = product_variant_id
 
     try {
         const productInventory = await prisma.product_inventories.update({
             where: {
-                id: Number(id)
+                product_id: product_id,
+                product_variant_id: product_variant_id
             },
             data: data
         });

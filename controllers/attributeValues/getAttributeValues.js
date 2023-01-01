@@ -5,7 +5,7 @@ import { respondWithError, respondWithSuccess } from "../../resources/apiRespons
 
 async function getAttributeValues(req, res) {
 
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id)
         return respondWithError({ res: res, message: 'id parameter can not be empty', httpCode: 401 });

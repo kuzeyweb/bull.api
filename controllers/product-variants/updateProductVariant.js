@@ -14,7 +14,7 @@ async function updateProductVariant(req, res) {
     }
 
     const { barcode, list_price, sale_price, dimensional_weight, vat_rate, images } = req.body;
-    const { id } = req.query;
+    const { id } = req.params;
 
     //processing the data
     let data = {};

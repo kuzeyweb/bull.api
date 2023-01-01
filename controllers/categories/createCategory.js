@@ -38,13 +38,13 @@ async function createCategory(req, res) {
         return respondWithSuccess({ res: res, message: 'Category created successfully', payload: { category: category } });
     } catch (err) {
         if (req.files.icon)
-            fs.unlink(`./public/cdn/${req.files.icon[0]?.filename}`, err => {
+            fs.unlink(`./uploads/${req.files.icon[0]?.filename}`, err => {
                 if (err) {
                     console.error(err);
                 }
             });
         if (req.files.banner)
-            fs.unlink(`./public/cdn/${req.files.banner[0]?.filename}`, err => {
+            fs.unlink(`./uploads/${req.files.banner[0]?.filename}`, err => {
                 if (err) {
                     console.error(err);
                 }

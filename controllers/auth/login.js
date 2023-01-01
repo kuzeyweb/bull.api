@@ -1,6 +1,5 @@
 import CryptoJS from 'crypto-js'
 import { sendTwoFactorAuthMail } from '../../mail/mailOperations';
-import withProtect from '../../middlewares/withProtect';
 import { prisma } from '../../prisma/client';
 import { respondWithError, respondWithSuccess } from '../../resources/apiResponse';
 import { createAuthTokens } from '../../resources/tokenOperations';

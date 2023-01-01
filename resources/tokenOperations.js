@@ -1,6 +1,6 @@
-import { prisma } from "../prisma/client"
+import { prisma } from "../prisma/client.js"
 import jwt from "jsonwebtoken";
-import { respondWithError, respondWithSuccess } from "./apiResponse";
+import { respondWithError, respondWithSuccess } from "./apiResponse.js";
 
 export const createAuthTokens = async ({ user }) => {
     await prisma.$connect();

@@ -4,7 +4,7 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function deleteAttribute(req, res) {
-    const { id } = req.query;
+    const { id } = req.params;
 
     try {
         await prisma.attributes.delete({

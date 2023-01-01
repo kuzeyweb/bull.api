@@ -12,7 +12,7 @@ async function updateCategory(req, res) {
         req.files.banner && (req.body.banner = `${process.env.CDN_URL}${req.files?.banner[0]?.filename}`)
     }
 
-    const { id } = req.query;
+    const { id } = req.params;
     const { name, description, parent_id, banner, icon } = req.body;
 
     //processing the data
@@ -29,15 +29,15 @@ async function updateCategory(req, res) {
         },
     });
 
-    if (currentCategory.banner || currentCategory.icon) {
+    if (currentCategory?.banner || currentCategory?.icon) {
         if (currentCategory.banner && banner)
-            fs.unlink(`./public/cdn/${currentCategory.banner.split('/').pop()}`, err => {
+            fs.unlink(`./uploads/${currentCategory.banner.split('/').pop()}`, err => {
                 if (err) {
                     console.error(err);
                 }
             });
-        if (currentCategory.icon && icon)
-            fs.unlink(`./public/cdn/${currentCategory.icon.split('/').pop()}`, err => {
+        if (currentCategory?.icon && icon)
+            fs.unlink(`./uploads/${currentCategory.icon.split('/').pop()}`, err => {
                 if (err) {
                     console.error(err);
                 }
@@ -48,6 +48,7 @@ async function updateCategory(req, res) {
         return respondWithError({ res: res, message: 'Id parameter can not be empty', httpCode: 401 });
 
     try {
+
         const category = await prisma.categories.update({
             where: {
                 id: Number(id)
@@ -57,14 +58,14 @@ async function updateCategory(req, res) {
 
         return respondWithSuccess({ res: res, message: 'Category updated successfully', payload: { category: category } });
     } catch (err) {
-        if (req.files.icon)
-            fs.unlink(`./public/cdn/${req.files.icon[0]?.filename}`, err => {
+        if (req.files?.icon)
+            fs.unlink(`./uploads/${req.files.icon[0]?.filename}`, err => {
                 if (err) {
                     console.error(err);
                 }
             });
-        if (req.files.banner)
-            fs.unlink(`./public/cdn/${req.files.banner[0]?.filename}`, err => {
+        if (req.files?.banner)
+            fs.unlink(`./uploads/${req.files.banner[0]?.filename}`, err => {
                 if (err) {
                     console.error(err);
                 }

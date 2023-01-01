@@ -3,9 +3,16 @@ import withPermission from "../../middlewares/withPermission"
 import { prisma } from "../../prisma/client";
 import slugify from 'slugify';
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
+import fs from 'fs';
 
 async function createStore(req, res) {
-    const { name, slug, user_id } = req.body;
+
+    if (req.files) {
+        req.files.icon && (req.body.icon = `${process.env.CDN_URL}${req.files?.icon[0]?.filename}`)
+        req.files.banner && (req.body.banner = `${process.env.CDN_URL}${req.files?.banner[0]?.filename}`)
+    }
+
+    const { name, slug, user_id, banner, icon } = req.body;
     const { application } = req.headers;
 
     let slugifiedName;
@@ -20,13 +27,15 @@ async function createStore(req, res) {
                 application_id: Number(application),
                 name: name,
                 slug: slugifiedName,
-                status: "active"
+                status: "active",
+                icon: icon ?? null,
+                banner: banner ?? null
             }
         });
 
         const usersPivot = await prisma.user_has_stores.create({
             data: {
-                user_id: user_id,
+                user_id: Number(user_id),
                 store_id: store.id
             },
 
@@ -50,6 +59,18 @@ async function createStore(req, res) {
         prisma.$disconnect();
         return respondWithSuccess({ res: res, message: 'Store created successfully', payload: { store: store } });
     } catch (err) {
+        if (req.files.icon)
+            fs.unlink(`./uploads/${req.files.icon[0]?.filename}`, err => {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        if (req.files.banner)
+            fs.unlink(`./uploads/${req.files.banner[0]?.filename}`, err => {
+                if (err) {
+                    console.error(err);
+                }
+            });
         prisma.$disconnect();
         return respondWithError({ res: res, message: err.message, httpCode: 500 });
     }

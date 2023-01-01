@@ -26,7 +26,7 @@ async function createProductVariant(req, res) {
         list_price: list_price ?? null,
         sale_price: sale_price ?? null,
         dimensional_weight: dimensional_weight ?? null,
-        images: images ?? null
+        images: images ?? undefined
     }
 
     if (quantity && is_in_stock) {

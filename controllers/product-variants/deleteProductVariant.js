@@ -4,7 +4,7 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function deleteProductVariant(req, res) {
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id)
         return respondWithError({ res: res, message: 'Id field can not be empty', httpCode: 401 });
@@ -16,7 +16,10 @@ async function deleteProductVariant(req, res) {
             },
         });
 
-        product_variant.images.forEach(imageUrl => {
+        if (!product_variant)
+            return respondWithError({ res: res, message: 'Product variant not found', httpCode: 401 });
+
+        product_variant.images?.forEach(imageUrl => {
             fs.unlink(`./public/cdn/${imageUrl.split('/').pop()}`, err => {
                 if (err) {
                     console.error(err);

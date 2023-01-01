@@ -4,7 +4,7 @@ import { respondWithError, respondWithSuccess } from "../../resources/apiRespons
 
 async function getStore(req, res) {
 
-    const { id } = req.query;
+    const { id } = req.params;
 
     try {
         const store = await prisma.stores.findFirst({

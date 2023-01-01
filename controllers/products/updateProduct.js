@@ -16,7 +16,7 @@ async function updateProduct(req, res) {
     }
 
     const { name, slug, barcode, brand_name, list_price, sale_price, store_id, dimensional_weight, vat_rate, images } = req.body;
-    const { id } = req.query;
+    const { id } = req.params;
 
     //processing the data
     let data = {};
@@ -42,6 +42,9 @@ async function updateProduct(req, res) {
                 id: Number(id)
             },
         });
+        if (!currentProduct)
+            return respondWithError({ res: res, message: 'Product not found', httpCode: 401 });
+
         data.images = [...currentProduct.images, ...data.images];
 
         const product = await prisma.products.update({
@@ -54,7 +57,7 @@ async function updateProduct(req, res) {
         return respondWithSuccess({ res: res, message: 'Product updated successfully', payload: { product: product } });
     } catch (err) {
         req.files.forEach(imageUrl => {
-            fs.unlink(`./public/cdn/${imageUrl.filename}`, err => {
+            fs.unlink(`./uploads/${imageUrl.filename}`, err => {
                 if (err) {
                     console.error(err);
                 }

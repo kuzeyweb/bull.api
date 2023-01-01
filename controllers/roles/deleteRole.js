@@ -4,13 +4,12 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function deleteRole(req, res) {
-    const { id } = req.query;
-    const { application } = req.headers;
+    const { id } = req.params;
+
     try {
         await prisma.roles.delete({
             where: {
                 id: Number(id),
-                application_id: Number(application)
             }
         });
 

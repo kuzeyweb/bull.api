@@ -5,7 +5,7 @@ import { respondWithError, respondWithSuccess } from "../../resources/apiRespons
 
 async function updateAttributeValue(req, res) {
 
-    const { id } = req.query;
+    const { id } = req.params;
     const { name } = req.body;
 
     if (!id)

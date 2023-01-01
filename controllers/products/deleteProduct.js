@@ -5,7 +5,7 @@ import { respondWithError, respondWithSuccess } from "../../resources/apiRespons
 import fs from 'fs';
 
 async function deleteProduct(req, res) {
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id)
         return respondWithError({ res: res, message: 'Id field can not be empty', httpCode: 401 });

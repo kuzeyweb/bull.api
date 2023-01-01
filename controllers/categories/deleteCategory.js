@@ -6,7 +6,7 @@ import fs from "fs";
 
 async function deleteCategory(req, res) {
 
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id)
         return respondWithError({ res: res, message: 'Id parameter can not be empty', httpCode: 401 });
@@ -43,7 +43,7 @@ async function deleteCategory(req, res) {
         });
 
         categoryImages?.forEach(imageUrl => {
-            fs.unlink(`./public/cdn/${imageUrl.split('/').pop()}`, err => {
+            fs.unlink(`./public/cdn/${imageUrl?.split('/').pop()}`, err => {
                 if (err) {
                     console.error(err);
                 }

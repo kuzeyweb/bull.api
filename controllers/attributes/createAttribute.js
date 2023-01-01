@@ -4,7 +4,7 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 
 async function createAttribute(req, res) {
-    const { name, is_variantable, parent_id } = req.body;
+    const { name, is_variantable, required, parent_id } = req.body;
     const { application } = req.headers;
 
     if (!name)
@@ -15,8 +15,9 @@ async function createAttribute(req, res) {
             data: {
                 application_id: Number(application),
                 name: name,
-                is_variantable: is_variantable,
-                parent_id: parent_id
+                is_variantable: Boolean(is_variantable),
+                required: Boolean(required),
+                parent_id: parent_id ?? null
             }
         });
 
