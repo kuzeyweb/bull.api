@@ -1,0 +1,36 @@
+{
+  "name": "bull-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuzeyweb/bull-api.git"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kuzeyweb/bull-api/issues"
+  },
+  "homepage": "https://github.com/kuzeyweb/bull-api#readme",
+  "dependencies": {
+    "@prisma/client": "^4.8.0",
+    "cryptojs": "^2.5.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "json-web-token": "^3.2.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.8.0",
+    "prisma": "^4.8.0",
+    "slugify": "^1.6.5"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
