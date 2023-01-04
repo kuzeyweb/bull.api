@@ -1,8 +1,8 @@
 import { prisma } from "../prisma/client.js"
 import jwt from "jsonwebtoken";
-import { respondWithError, respondWithSuccess } from "./apiResponse.js";
+import requestIp from 'request-ip';
 
-export const createAuthTokens = async ({ user }) => {
+export const createAuthTokens = async ({ req, user, credentials }) => {
     await prisma.$connect();
 
     await prisma.user_tokens.deleteMany({
@@ -19,22 +19,18 @@ export const createAuthTokens = async ({ user }) => {
             lastName: user.last_name,
             roles: user.roles,
             permissions: user.permissions,
-            expiresIn: "1h",
+            application: user.application.id,
         },
         process.env.JWT_ACCESS_TOKEN_SECRET,
-        { algorithm: 'HS256' });
+        { expiresIn: 20, }, { algorithm: 'HS256' });
 
     var refreshToken = jwt.sign(
         {
             id: user.id,
             email: user.email,
-            firstName: user.first_name,
-            lastName: user.last_name,
-            roles: user.roles,
-            permissions: user.permissions,
-            expiresIn: "1m",
         },
         process.env.JWT_REFRESH_TOKEN_SECRET,
+        { expiresIn: "1m" },
         { algorithm: 'HS256' });
 
     var date = new Date();
@@ -44,39 +40,17 @@ export const createAuthTokens = async ({ user }) => {
             user_id: user.id,
             type: "refresh",
             token: refreshToken,
-            expires_at: oneMonthFromNow
+            expires_at: oneMonthFromNow,
+            ip_address: requestIp.getClientIp(req),
+            OS: credentials.OS,
+            OS_version: credentials.OS_version,
+            isMobile: credentials.isMobile,
+            fingerprint: credentials.fingerprint.toString(),
+            browser: credentials.browser,
+            browser_version: credentials.browser_version,
+            user_agent: credentials.user_agent
         }
     });
 
     return { accessToken: accessToken, refreshToken: refreshToken };
 };
-
-export const refreshAccessToken = async ({ res, user, refreshToken }) => {
-    const userToken = await prisma.user_tokens.findFirst({
-        where: {
-            user_id: user.id,
-            type: "refresh"
-        },
-    });
-    if (userToken.token !== refreshToken) return respondWithError({ res: res, message: 'Invalid token', httpCode: 401 });
-
-    const now = new Date();
-    const expireDate = new Date(userToken.expires_at);
-
-    if (expireDate.getTime() < now.getTime()) return respondWithError({ res: res, message: 'Expired token', httpCode: 401 });
-
-    var accessToken = jwt.sign(
-        {
-            id: user.id,
-            email: user.email,
-            firstName: user.first_name,
-            lastName: user.last_name,
-            roles: user.roles,
-            expiresIn: "1h",
-        },
-        process.env.JWT_ACCESS_TOKEN_SECRET,
-        { algorithm: 'HS256' });
-
-    respondWithSuccess({ res: res, message: "Refreshed access token", payload: accessToken })
-
-}

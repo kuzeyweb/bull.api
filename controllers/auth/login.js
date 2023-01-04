@@ -8,13 +8,11 @@ import { checkValidationCode, createValidationCode } from '../../resources/valid
 async function Login(req, res) {
 
     await prisma.$connect()
-
     const { email, password } = req.body;
+    const credentials = JSON.parse(req.headers['credentials']);
 
     if (!email || !password)
         return respondWithError({ res: res, message: "Email and password fields are required", httpCode: 400 });
-
-    const { application } = req.headers;
 
     try {
         const user = await prisma.users.findFirst({
@@ -103,7 +101,7 @@ async function Login(req, res) {
                 }
             })
             const { application_id, password, last_login, deleted_at, updated_at, ...others } = user;
-            const tokens = await createAuthTokens({ user: user });
+            const tokens = await createAuthTokens({ user: user, req: req, credentials: credentials });
             respondWithSuccess({ res: res, message: "User successfully logged in", payload: { user: { ...others, tokens } } });
         }
     } catch (err) {

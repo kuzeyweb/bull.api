@@ -9,7 +9,7 @@ const withProtect = (login) => {
         const accessToken = authorization?.split(' ')[1];
 
         if (!authorization)
-            return respondWithError({ res: res, message: "Please log in to get access", httpCode: 403 });
+            return respondWithError({ res: res, message: "Please log in to get access", httpCode: 401 });
 
         try {
             const decoded = jwt.verify(
@@ -47,13 +47,13 @@ const withProtect = (login) => {
             req.user = currentUser;
 
             if (!currentUser)
-                return respondWithError({ res: res, message: "The token belonging to this user no longer exists", httpCode: 403 });
+                return respondWithError({ res: res, message: "The token belonging to this user no longer exists", httpCode: 404 });
 
             req.user = currentUser;
 
             return login(req, res);
         } catch (err) {
-            return respondWithError({ res: res, message: err.message, httpCode: 403 });
+            return respondWithError({ res: res, message: err.message, httpCode: 401 });
         }
     }
 }

@@ -90,13 +90,21 @@ model stores {
 }
 
 model user_tokens {
-  id         Int         @id @default(autoincrement())
-  user_id    Int
-  token      String      @db.VarChar(300)
-  created_at DateTime    @default(now())
-  user       users       @relation(fields: [user_id], references: [id])
-  expires_at DateTime
-  type       token_types
+  id              Int         @id @default(autoincrement())
+  user_id         Int
+  token           String      @db.VarChar(300)
+  created_at      DateTime    @default(now())
+  ip_address      String
+  fingerprint     String
+  browser         String?
+  browser_version String?
+  OS              String?
+  OS_version      String?
+  user_agent      String?
+  isMobile        Boolean?
+  user            users       @relation(fields: [user_id], references: [id])
+  expires_at      DateTime
+  type            token_types
 }
 
 model categories {
