@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { emailValidationTemplate, twoFactorAuthTemplate } from "./emailTemplates.js";
+import { emailValidationTemplate, passwordResetTemplate, twoFactorAuthTemplate } from "./emailTemplates.js";
 
 const transfer = nodemailer.createTransport({
     host: "mail.kuzeysoftware.com",
@@ -30,6 +30,23 @@ export const sendEmailValidationMail = ({ to, name, code }) => {
 export const sendTwoFactorAuthMail = ({ to, name, code }) => {
 
     var mailcontent = { ...twoFactorAuthTemplate(name, code) };
+    mailcontent.to = to;
+    let response = {};
+
+    try {
+        transfer.sendMail(mailcontent);
+        response = { error: false, message: "success" }
+    } catch (err) {
+        response = { error: true, message: err }
+    }
+
+    return response;
+
+}
+
+export const sendPasswordResetEmail = ({ to, name, code }) => {
+
+    var mailcontent = { ...passwordResetTemplate(name, code) };
     mailcontent.to = to;
     let response = {};
 

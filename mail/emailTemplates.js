@@ -39,3 +39,30 @@ export const twoFactorAuthTemplate = (name, code) => {
          </div>
          </div>`}
 }
+
+export const passwordResetTemplate = (name, code) => {
+    return {
+        from: "mailer@kuzeysoftware.com",
+        subject: "Şifremi Unuttum",
+        text: "",
+        html:
+            `<div style="background-color: #000;font-family: Arial, sans-serif;">
+        <img src="https://i.ibb.co/9b48rY1/kuzey-white.png" alt="">
+        <h2 style="margin-bottom: 40px;text-align: center; color: #fff;">Merhaba ${name},
+            şifreni yenilemek için lütfen aşağıdaki butona tıkla!</h2>
+        <div style="padding-bottom: 20px;text-align: center;">
+            <a href="${process.env.PUBLIC_URL}/password-reset?token=${code}" style="background-color: #fff;
+                border: none;
+                color: 000;
+                border-radius : 24px;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;">
+                Buraya tıklayarak şifrenizi yenileyebilirsiniz.
+            </a>
+        </div>
+    </div>`
+    }
+}

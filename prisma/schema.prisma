@@ -310,6 +310,7 @@ enum status {
 enum validation_types {
   email_verification
   two_factor_auth
+  password_reset
 }
 
 enum token_types {
