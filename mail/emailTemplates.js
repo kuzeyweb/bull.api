@@ -40,7 +40,7 @@ export const twoFactorAuthTemplate = (name, code) => {
          </div>`}
 }
 
-export const passwordResetTemplate = (name, code) => {
+export const passwordResetTemplate = (name, code, to) => {
     return {
         from: "mailer@kuzeysoftware.com",
         subject: "Şifremi Unuttum",
@@ -51,7 +51,7 @@ export const passwordResetTemplate = (name, code) => {
         <h2 style="margin-bottom: 40px;text-align: center; color: #fff;">Merhaba ${name},
             şifreni yenilemek için lütfen aşağıdaki butona tıkla!</h2>
         <div style="padding-bottom: 20px;text-align: center;">
-            <a href="${process.env.PUBLIC_URL}/password-reset?token=${code}" style="background-color: #fff;
+            <a href="${process.env.PUBLIC_URL}/password-reset?token=${code}&email=${to}" style="background-color: #fff;
                 border: none;
                 color: 000;
                 border-radius : 24px;

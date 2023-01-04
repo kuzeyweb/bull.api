@@ -1,4 +1,5 @@
 import { prisma } from "../prisma/client";
+import { respondWithError } from "../resources/apiResponse";
 
 export const checkEmail = async (req, res, next) => {
     try {
@@ -15,10 +16,9 @@ export const checkEmail = async (req, res, next) => {
         }
         else{
             req.body.emailValidation = false;
-            next();
+            return respondWithError({ res: res, message: "User not found", httpCode: 400 });
         } 
     } catch (err) {
-        console.log(err);
-        next();
+        return console.log(err);
     }
 }

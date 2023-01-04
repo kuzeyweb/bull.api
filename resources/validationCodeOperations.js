@@ -31,7 +31,6 @@ export const checkValidationCode = async ({ email, type, userCode }) => {
             type: type
         }
     });
-    await prisma.$disconnect();
 
     if (validationData?.code === userCode) {
         await prisma.validation_codes.deleteMany({
@@ -39,6 +38,7 @@ export const checkValidationCode = async ({ email, type, userCode }) => {
                 email: email
             }
         });
+        await prisma.$disconnect();
         return { error: false, message: true }
     } else return { error: true, message: 'Invalid token' }
 }

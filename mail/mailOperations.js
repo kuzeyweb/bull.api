@@ -46,7 +46,7 @@ export const sendTwoFactorAuthMail = ({ to, name, code }) => {
 
 export const sendPasswordResetEmail = ({ to, name, code }) => {
 
-    var mailcontent = { ...passwordResetTemplate(name, code) };
+    var mailcontent = { ...passwordResetTemplate(name, code, to) };
     mailcontent.to = to;
     let response = {};
 
