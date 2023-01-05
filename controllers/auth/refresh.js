@@ -5,6 +5,10 @@ import { respondWithError, respondWithSuccess } from '../../resources/apiRespons
 
 async function refreshToken(req, res) {
 
+    if (!req.headers['credentials']) {
+        return respondWithError({ res: res, message: "Forbidden", httpCode: 403 });
+    }
+
     const credentials = JSON.parse(req.headers['credentials']);
 
     const { id } = req.params;
@@ -72,6 +76,15 @@ async function refreshToken(req, res) {
             },
             process.env.JWT_ACCESS_TOKEN_SECRET,
             { expiresIn: 20, }, { algorithm: 'HS256' });
+
+        await prisma.user_tokens.update({
+            where: {
+                id: req.userToken?.id,
+            },
+            data: {
+                last_use_time: new Date()
+            }
+        })
 
         return respondWithSuccess({ res: res, message: "success", payload: { access_token: accessToken } })
     } catch (err) {

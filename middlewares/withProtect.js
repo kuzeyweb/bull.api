@@ -53,6 +53,7 @@ const withProtect = (login) => {
 
             return login(req, res);
         } catch (err) {
+            console.error(err)
             return respondWithError({ res: res, message: err.message, httpCode: 401 });
         }
     }

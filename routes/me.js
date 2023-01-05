@@ -4,6 +4,8 @@ import forgotPassword from '../controllers/me/forgotPassword';
 import { rateLimit } from 'express-rate-limit';
 import { checkEmail } from '../middlewares/checkEmail';
 import resetPassword from '../controllers/me/resetPassword';
+import activityLog from '../controllers/me/activityLog';
+import changePassword from '../controllers/me/changePassword';
 
 const router = Router();
 
@@ -15,7 +17,15 @@ router.post('/forgot-password', checkEmail, rateLimit({
     message: { error: true, message: "Please wait before retrying.", payload: [] }
 }), forgotPassword);
 
-router.post('/reset-password', resetPassword);
+router.post('/reset-password', rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1,
+    message: { error: true, message: "Please wait before retrying.", payload: [] }
+}), resetPassword);
+
+router.get('/activity-log', activityLog);
+
+router.post('/change-password', changePassword)
 
 export default router;
 

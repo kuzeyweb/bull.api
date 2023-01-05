@@ -9,6 +9,10 @@ async function Login(req, res) {
 
     await prisma.$connect()
     const { email, password } = req.body;
+
+    if (!req.headers['credentials']) {
+        return respondWithError({ res: res, message: "Forbidden", httpCode: 403 });
+    }
     const credentials = JSON.parse(req.headers['credentials']);
 
     if (!email || !password)
@@ -88,7 +92,7 @@ async function Login(req, res) {
                 const twoFactorMailStatus = sendTwoFactorAuthMail({ to: user.email, name: user.first_name, code: validationCode });
 
                 if (twoFactorMailStatus?.error) respondWithError({ res: res, message: emailValidationStatus?.message, httpCode: 500 })
-                else respondWithSuccess({ res: res, message: "Credentials matched, verification code sent" });
+                else return respondWithSuccess({ res: res, message: "Credentials matched, verification code sent" });
             }
         } else {
             // if 2fa is off just complete login
@@ -102,10 +106,11 @@ async function Login(req, res) {
             })
             const { application_id, password, last_login, deleted_at, updated_at, ...others } = user;
             const tokens = await createAuthTokens({ user: user, req: req, credentials: credentials });
-            respondWithSuccess({ res: res, message: "User successfully logged in", payload: { user: { ...others, tokens } } });
+
+            return respondWithSuccess({ res: res, message: "You have successfully logged in", payload: { user: { ...others, tokens } } });
         }
     } catch (err) {
-        respondWithError({ res: res, message: err.message, httpCode: 500 })
+        return respondWithError({ res: res, message: err.message, httpCode: 500 })
     }
     await prisma.$disconnect()
 }

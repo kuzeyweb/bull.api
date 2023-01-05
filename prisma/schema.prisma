@@ -104,6 +104,7 @@ model user_tokens {
   isMobile        Boolean?
   user            users       @relation(fields: [user_id], references: [id])
   expires_at      DateTime
+  last_use_time   DateTime?
   type            token_types
 }
 
