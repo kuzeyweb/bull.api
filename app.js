@@ -4,6 +4,7 @@ import path from 'path';
 import {
     auth,
     me,
+    users,
     roles,
     permissions,
     categories,
@@ -28,6 +29,8 @@ app.use(cookieParser());
 app.use('/api/auth', auth);
 
 app.use('/api/me', me);
+
+app.use('/api/users', users);
 
 app.use('/api/roles', roles);
 
