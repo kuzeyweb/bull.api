@@ -5,21 +5,23 @@ import { respondWithError, respondWithSuccess } from "../../resources/apiRespons
 
 async function assignPermissions(req, res) {
 
-    const { permission_ids, role_id } = req.body;
+    let { permission_names, role_id, permission_ids } = req.body;
+
+    if (!permission_names || !role_id)
+        return respondWithError({ res: res, message: "role_id, permission_names fields are required", httpCode: 403 });
+
+    if (Number(role_id) === 1)
+        return respondWithError({ res: res, message: "You cannot assign permissions to super admin role", httpCode: 403 });
 
     try {
-        const permissions = await prisma.permissions.findMany({
-            select: {
-                id: true
-            }
-        });
+        const permissions = await prisma.permissions.findMany();
+
+        const permNameToId = permissions.filter((perm) => permission_names.includes(perm.name));
+        permission_ids = permNameToId.map((perm) => perm.id);
         // if the request has invalid role ids, getting only valid ones to a variable
         const permissionIds = permissions.map((perm) => perm.id);
         const availableReqPermissions = permission_ids?.filter((id) => permissionIds.includes(id)) ?? [];
         const result = availableReqPermissions?.map((perm) => ({ role_id: Number(role_id), permission_id: Number(perm) }));
-
-        if (availableReqPermissions?.length < 1)
-            return respondWithError({ res: res, message: "Invalid permission id", httpCode: 404 })
 
         await prisma.roles_has_permissions.deleteMany({
             where: {

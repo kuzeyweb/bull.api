@@ -5,21 +5,18 @@ import { respondWithError, respondWithSuccess } from "../../resources/apiRespons
 
 async function assignRoles(req, res) {
 
-    const { role_ids, user_id } = req.body;
+    let { role_names, user_id, role_ids } = req.body;
 
     try {
-        const roles = await prisma.roles.findMany({
-            select: {
-                id: true
-            }
-        });
+        const roles = await prisma.roles.findMany();
+
+        const roleNameToId = roles.filter((role) => role_names.includes(role.name));
+        role_ids = roleNameToId.map((role) => role.id);
+
         // if the request has invalid role ids, getting only valid ones to a variable
         const roleIds = roles.map((rl) => rl.id);
         const availableReqRoles = role_ids?.filter((id) => roleIds.includes(id)) ?? [];
         const result = availableReqRoles.map((rl) => ({ user_id: Number(user_id), role_id: Number(rl) }));
-
-        if (availableReqRoles.length < 1)
-            return respondWithError({ res: res, message: "Invalid role id", httpCode: 404 })
 
         await prisma.user_has_roles.deleteMany({
             where: {

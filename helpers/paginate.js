@@ -11,12 +11,9 @@ export const paginate = ({ Page, Limit, Count }) => {
         total: count
     };
 
-    if (page && limit) {
+    if (!page && !Limit) {
         return {
-            query: {
-                skip: page !== 1 ? ((page - 1) * limit) : 0,
-                take: limit,
-            }, meta
+            query: { take: count }
         }
     } else if (!page && limit) {
         return {
@@ -31,10 +28,11 @@ export const paginate = ({ Page, Limit, Count }) => {
                 take: limit,
             }, meta
         }
-    } else if (!page && !limit) {
+    } else if (page && limit) {
         return {
             query: {
-                take: count,
+                skip: page !== 1 ? ((page - 1) * limit) : 0,
+                take: limit,
             }, meta
         }
     }
