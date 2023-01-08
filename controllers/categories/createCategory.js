@@ -53,4 +53,4 @@ async function createCategory(req, res) {
     }
 }
 
-export default withProtect(withPermission(createCategory, "categories-create"))
+export default withProtect(withPermission(createCategory, "category-create"))

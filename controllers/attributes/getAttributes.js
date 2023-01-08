@@ -22,4 +22,4 @@ async function getAttributes(req, res) {
     }
 }
 
-export default withProtect(withPermission(getAttributes, "attributes-read"))
+export default withProtect(withPermission(getAttributes, "attribute-read"))

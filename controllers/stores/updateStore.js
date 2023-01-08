@@ -74,4 +74,4 @@ async function updateStore(req, res) {
     }
 }
 
-export default withProtect(withPermission(updateStore, "stores-update"))
+export default withProtect(withPermission(updateStore, "store-update"))

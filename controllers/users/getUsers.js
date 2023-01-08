@@ -49,4 +49,4 @@ async function getUsers(req, res) {
     }
 }
 
-export default withProtect(withPermission(getUsers, "users-read"));
+export default withProtect(withPermission(getUsers, "user-read"));

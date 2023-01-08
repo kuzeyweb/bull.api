@@ -52,4 +52,4 @@ async function assignAttributes(req, res) {
     }
 }
 
-export default withProtect(withPermission(assignAttributes, "attributes-assign"))
+export default withProtect(withPermission(assignAttributes, "attribute-assign"))

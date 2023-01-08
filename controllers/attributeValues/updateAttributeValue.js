@@ -30,4 +30,4 @@ async function updateAttributeValue(req, res) {
     }
 }
 
-export default withProtect(withPermission(updateAttributeValue, "attribute-values-update"))
+export default withProtect(withPermission(updateAttributeValue, "attribute-value-update"))

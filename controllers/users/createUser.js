@@ -32,4 +32,4 @@ async function createUser(req, res) {
     }
 }
 
-export default withProtect(withPermission(createUser, "users-create"));
+export default withProtect(withPermission(createUser, "user-create"));

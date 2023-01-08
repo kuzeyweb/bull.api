@@ -2,16 +2,21 @@ import withProtect from "../../middlewares/withProtect"
 import withPermission from "../../middlewares/withPermission"
 import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
+import { paginate } from "../../helpers/paginate";
 
 async function getRoles(req, res) {
 
-    const { include } = req.query;
+    const { include, page, limit } = req.query;
     const { application } = req.headers;
 
     const includeQuery = include?.split(',');
 
     try {
+        const count = await prisma.roles.count();
+        const pagination = paginate({ Page: page, Limit: limit, Count: count });
+
         const roles = await prisma.roles.findMany(includeQuery?.includes("permissions") ? {
+            ...pagination.query,
             where: {
                 application_id: Number(application)
             },
@@ -35,7 +40,7 @@ async function getRoles(req, res) {
         includeQuery?.includes("permissions") &&
             roles.forEach((role) => role.permissions = role.permissions.map((perm) => perm.permissions.name));
         prisma.$disconnect();
-        return respondWithSuccess({ res: res, message: 'Roles listed successfully', payload: { roles: roles } });
+        return respondWithSuccess({ res: res, message: 'Roles listed successfully', payload: { roles: roles }, meta: pagination.meta });
     } catch (err) {
         prisma.$disconnect();
         return respondWithError({ res: res, message: err.message, httpCode: 500 });

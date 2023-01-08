@@ -52,4 +52,4 @@ async function assignRoles(req, res) {
     }
 }
 
-export default withProtect(withPermission(assignRoles, "role-assign"))
+export default withProtect(withPermission(assignRoles, "role-update"))

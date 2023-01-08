@@ -57,4 +57,4 @@ async function deleteCategory(req, res) {
     }
 }
 
-export default withProtect(withPermission(deleteCategory, "categories-delete"))
+export default withProtect(withPermission(deleteCategory, "category-delete"))

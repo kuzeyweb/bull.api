@@ -6,6 +6,10 @@ import { respondWithError, respondWithSuccess } from "../../resources/apiRespons
 async function deleteRole(req, res) {
     const { id } = req.params;
 
+    if (Number(id) === 1) {
+        return respondWithError({ res: res, message: "You cannot delete super admin role", httpCode: 403 });
+    }
+
     try {
         await prisma.roles.delete({
             where: {

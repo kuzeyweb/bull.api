@@ -10,6 +10,10 @@ async function updateRole(req, res) {
     if (!id)
         return respondWithError({ res: res, message: 'Id parameter can not be empty', httpCode: 401 });
 
+    if (Number(id) === 1) {
+        return respondWithError({ res: res, message: "You cannot edit super admin role", httpCode: 403 });
+    }
+
     if (!name)
         return respondWithError({ res: res, message: 'Name field can not be empty', httpCode: 401 });
 

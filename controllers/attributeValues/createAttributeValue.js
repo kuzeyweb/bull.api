@@ -26,4 +26,4 @@ async function createAttributeValue(req, res) {
     }
 }
 
-export default withProtect(withPermission(createAttributeValue, "attribute-values-create"))
+export default withProtect(withPermission(createAttributeValue, "attribute-value-create"))

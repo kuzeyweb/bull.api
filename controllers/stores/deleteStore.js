@@ -21,4 +21,4 @@ async function deleteStore(req, res) {
     }
 }
 
-export default withProtect(withPermission(deleteStore, "stores-delete"))
+export default withProtect(withPermission(deleteStore, "store-delete"))

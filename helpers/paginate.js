@@ -34,7 +34,7 @@ export const paginate = ({ Page, Limit, Count }) => {
     } else if (!page && !limit) {
         return {
             query: {
-                take: limit,
+                take: count,
             }, meta
         }
     }

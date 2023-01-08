@@ -47,8 +47,9 @@ async function Login(req, res) {
         if (!user) return respondWithError({ res: res, message: "User not found", httpCode: 400 });
 
         const roles = user.roles?.map((roles) => roles.role.name);
-        const permissions = user.roles?.map((roles) => roles.role.permissions.map((perm) => perm.permissions.name)).flat(10)
-        user.roles = roles; user.permissions = permissions;
+        const permissions = user.roles?.map((roles) => roles.role.permissions.map((perm) => perm.permissions.name)).flat(10);
+        const uniquePermissions = [...new Set(permissions)];
+        user.roles = roles; user.permissions = uniquePermissions;
 
         // validate password
         const hashedPass = CryptoJS.AES.decrypt(user.password, process.env.CRYPTO_JS_SECRET_KEY);

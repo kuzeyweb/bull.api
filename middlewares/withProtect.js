@@ -42,7 +42,8 @@ const withProtect = (login) => {
 
             const roles = currentUser.roles?.map((roles) => roles.role.name);
             const permissions = currentUser.roles?.map((roles) => roles.role.permissions.map((perm) => perm.permissions.name)).flat(10)
-            currentUser.roles = roles; currentUser.permissions = permissions;
+            const uniquePermissions = [...new Set(permissions)];
+            currentUser.roles = roles; currentUser.permissions = uniquePermissions;
 
             req.user = currentUser;
 

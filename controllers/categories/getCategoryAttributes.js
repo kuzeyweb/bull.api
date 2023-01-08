@@ -24,4 +24,4 @@ async function getCategoryAttributes(req, res) {
     }
 }
 
-export default withProtect(withPermission(getCategoryAttributes, "attributes-read"));
+export default withProtect(withPermission(getCategoryAttributes, "attribute-read"));

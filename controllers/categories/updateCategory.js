@@ -74,4 +74,4 @@ async function updateCategory(req, res) {
     }
 }
 
-export default withProtect(withPermission(updateCategory, "categories-update"))
+export default withProtect(withPermission(updateCategory, "category-update"))

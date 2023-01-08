@@ -22,4 +22,4 @@ async function deleteAttributeValue(req, res) {
     }
 }
 
-export default withProtect(withPermission(deleteAttributeValue, "attribute-values-delete"))
+export default withProtect(withPermission(deleteAttributeValue, "attribute-value-delete"))

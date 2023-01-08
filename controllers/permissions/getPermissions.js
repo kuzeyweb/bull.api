@@ -16,4 +16,4 @@ async function getPermissions(req, res) {
     }
 }
 
-export default withProtect(withPermission(getPermissions, "permissions-read"))
+export default withProtect(withPermission(getPermissions, "permission-read"))

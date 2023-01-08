@@ -76,4 +76,4 @@ async function createStore(req, res) {
     }
 }
 
-export default withProtect(withPermission(createStore, "stores-create"))
+export default withProtect(withPermission(createStore, "store-create"))

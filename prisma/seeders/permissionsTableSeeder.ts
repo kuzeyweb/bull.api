@@ -19,11 +19,7 @@ export const seedPermissionsTable = async () => {
             },
             {
                 application_id: 1,
-                name: "role-edit"
-            },
-            {
-                application_id: 1,
-                name: "role-assign"
+                name: "role-update"
             },
             {
                 application_id: 1,
@@ -31,63 +27,95 @@ export const seedPermissionsTable = async () => {
             },
             {
                 application_id: 1,
-                name: "permissions-read"
+                name: "user-create"
             },
             {
                 application_id: 1,
-                name: "permissions-assign"
+                name: "user-read"
             },
             {
                 application_id: 1,
-                name: "categories-create"
+                name: "user-delete"
             },
             {
                 application_id: 1,
-                name: "categories-update"
+                name: "user-update"
             },
             {
                 application_id: 1,
-                name: "categories-delete"
+                name: "user-update"
             },
             {
                 application_id: 1,
-                name: "stores-create"
+                name: "permission-read"
             },
             {
                 application_id: 1,
-                name: "stores-delete"
+                name: "category-create"
             },
             {
                 application_id: 1,
-                name: "stores-update"
+                name: "category-update"
             },
             {
                 application_id: 1,
-                name: "product-feature-create"
+                name: "category-delete"
             },
             {
                 application_id: 1,
-                name: "product-feature-delete"
+                name: "store-create"
             },
             {
                 application_id: 1,
-                name: "product-feature-read"
+                name: "store-delete"
             },
             {
                 application_id: 1,
-                name: "product-feature-update"
+                name: "store-update"
             },
             {
                 application_id: 1,
-                name: "product-feature-model-create"
+                name: "attribute-create"
             },
             {
                 application_id: 1,
-                name: "product-feature-model-read"
+                name: "attribute-read"
             },
             {
                 application_id: 1,
-                name: "product-feature-model-update"
+                name: "attribute-update"
+            },
+            {
+                application_id: 1,
+                name: "attribute-delete"
+            },
+            {
+                application_id: 1,
+                name: "attribute-value-create"
+            },
+            {
+                application_id: 1,
+                name: "attribute-value-read"
+            },
+            {
+                application_id: 1,
+                name: "attribute-value-update"
+            },
+            {
+                application_id: 1,
+                name: "attribute-value-delete"
+            },
+            {
+                application_id: 1,
+                name: "product-create"
+            },
+            {
+                application_id: 1,
+                name: "product-update"
+            },
+            {
+                application_id: 1,
+                name: "product-delete"
             },
 
         ]

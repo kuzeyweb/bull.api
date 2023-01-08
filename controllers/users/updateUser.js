@@ -43,4 +43,4 @@ async function updateUser(req, res) {
     }
 }
 
-export default withProtect(withPermission(updateUser, "users-update"));
+export default withProtect(withPermission(updateUser, "user-update"));
