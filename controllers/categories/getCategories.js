@@ -1,3 +1,4 @@
+import { paginate } from "../../helpers/paginate";
 import withProtect from "../../middlewares/withProtect";
 import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
@@ -17,6 +18,8 @@ function createCategories(categories, parent_id = null) {
             id: cate.id,
             name: cate.name,
             slug: cate.slug,
+            icon: cate.icon,
+            banner: cate.banner,
             description: cate.description,
             subCategories: createCategories(categories, cate.id)
         });
@@ -27,17 +30,23 @@ function createCategories(categories, parent_id = null) {
 async function getCategories(req, res) {
 
     const { application } = req.headers;
+    const { page, limit, unstructured } = req.query;
 
     try {
+        const count = await prisma.categories.count();
+        const pagination = paginate({ Page: page, Limit: limit, Count: count });
         const categories = await prisma.categories.findMany({
             where: {
                 application_id: Number(application)
             }
         });
 
+        if (unstructured)
+            return respondWithSuccess({ res: res, message: "Categories listed successfully", payload: { categories: categories }, meta: pagination.meta })
+
         const payload = createCategories(categories);
 
-        return respondWithSuccess({ res: res, message: "Categories listed successfully", payload: { categories: payload } })
+        return respondWithSuccess({ res: res, message: "Categories listed successfully", payload: { categories: payload }, meta: pagination.meta })
 
     } catch (err) {
         return respondWithError({ res: res, message: res.message, httpCode: 500 });

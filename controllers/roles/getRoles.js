@@ -32,6 +32,7 @@ async function getRoles(req, res) {
                 }
             },
         } : {
+            ...pagination.query,
             where: {
                 application_id: Number(application)
             }
