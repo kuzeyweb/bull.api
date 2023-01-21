@@ -4,6 +4,8 @@ import { prisma } from "../../prisma/client";
 import { respondWithError, respondWithSuccess } from "../../resources/apiResponse";
 import fs from "fs";
 
+let categoryTree = [];
+
 async function deleteCategory(req, res) {
 
     const { id } = req.params;
@@ -12,35 +14,12 @@ async function deleteCategory(req, res) {
         return respondWithError({ res: res, message: 'Id parameter can not be empty', httpCode: 401 });
 
     try {
-
-        const categories = await prisma.categories.findMany({
-            where: {
-                OR: [,
-                    {
-                        parent_id: Number(id),
-                    },
-                    {
-                        id: Number(id)
-                    }]
-
-            }
-        });
+        await getCategoryTree(id, categoryTree);
 
         let categoryImages = [];
-        categories.map((sub) => (categoryImages = ([...categoryImages, sub.icon && sub.icon, sub.banner && sub.banner])));
+        categoryTree.map((sub) => (categoryImages = ([...categoryImages, sub.icon && sub.icon, sub.banner && sub.banner])));
 
-        await prisma.categories.deleteMany({
-            where: {
-                OR: [,
-                    {
-                        parent_id: Number(id),
-                    },
-                    {
-                        id: Number(id)
-                    }]
-
-            }
-        });
+        await deleteCategoryTree(id);
 
         categoryImages?.forEach(imageUrl => {
             fs.unlink(`./public/cdn/${imageUrl?.split('/').pop()}`, err => {
@@ -55,6 +34,22 @@ async function deleteCategory(req, res) {
     } catch (err) {
         return respondWithError({ res: res, message: err.message, httpCode: 500 });
     }
+}
+
+async function getCategoryTree(id) {
+    const subcategories = await prisma.categories.findMany({ where: { parent_id: Number(id) } });
+    for (const subcategory of subcategories) {
+        await getCategoryTree(subcategory.id);
+    }
+    await categoryTree.push(...subcategories)
+}
+
+async function deleteCategoryTree(id) {
+    const subcategories = await prisma.categories.findMany({ where: { parent_id: Number(id) } });
+    for (const subcategory of subcategories) {
+        await deleteCategoryTree(subcategory.id);
+    }
+    await prisma.categories.delete({ where: { id: Number(id) } });
 }
 
 export default withProtect(withPermission(deleteCategory, "category-delete"))

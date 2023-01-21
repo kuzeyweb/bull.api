@@ -19,8 +19,7 @@ async function createCategory(req, res) {
         return respondWithError({ res: res, message: 'Name field can not be empty', httpCode: 401 });
 
     let slugifiedName;
-    if (!slug)
-        slugifiedName = slugify(name);
+    if (!slug) slugifiedName = slugify(name);
     else slugifiedName = slugify(slug);
 
     try {

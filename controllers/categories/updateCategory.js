@@ -13,7 +13,11 @@ async function updateCategory(req, res) {
     }
 
     const { id } = req.params;
-    const { name, description, parent_id, banner, icon } = req.body;
+    const { name, description, parent_id, slug, banner, icon } = req.body;
+
+    let slugifiedName;
+    if (!slug) slugifiedName = slugify(name);
+    else slugifiedName = slugify(slug);
 
     //processing the data
     let data = {};
@@ -22,6 +26,7 @@ async function updateCategory(req, res) {
     if (parent_id) data.parent_id = parent_id;
     if (banner) data.banner = banner;
     if (icon) data.icon = icon;
+    if (slug) data.slug = slugifiedName;
 
     const currentCategory = await prisma.categories.findFirst({
         where: {
